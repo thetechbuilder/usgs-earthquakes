@@ -174,7 +174,7 @@ class GeoeventAdmin(SettingsAdminMixin, NotableAdminBase):
                         WITH ranges AS (SELECT (factor)::text||'-'||(CASE WHEN factor < 6 THEN factor + 1 ELSE 10 END)::text AS range,
                             factor AS min, CASE WHEN factor < 6 THEN factor + 1 ELSE 10 END AS max
                             FROM generate_series(0,6) AS t(factor))
-                        SELECT r.range, count(event.id), sum(event.magnitude), sum(EXTRACT(HOUR FROM event.date_recorded))*60 + sum(EXTRACT(MINUTE FROM event.date_recorded))
+                        SELECT r.range, count(event.*), sum(event.magnitude), sum(EXTRACT(HOUR FROM event.date_recorded))*60 + sum(EXTRACT(MINUTE FROM event.date_recorded))
                         FROM ranges r
                         LEFT JOIN (%s) event ON event.magnitude >= r.min AND event.magnitude < r.max
                         GROUP BY r.range
